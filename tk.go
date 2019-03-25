@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func GetTK(a, tkk string) string {
+func GetTK(s, tkk string) string {
 	b, _ := strconv.Atoi(strings.Split(tkk, ".")[0])
 	b1, _ := strconv.Atoi(strings.Split(tkk, ".")[1])
 
@@ -14,6 +14,7 @@ func GetTK(a, tkk string) string {
 	sb := "+-a^+6"
 	Zb := "+-3^+b+-f"
 
+	a := ascii(s)
 	e := make([]uint32, 0)
 	for f, g := 0, 0; g < len(a); g++ {
 		m := uint32(a[g])
@@ -90,6 +91,23 @@ func RL(a uint32, b string) uint32 {
 func Number(s string) uint32 {
 	i, _ := strconv.Atoi(s)
 	return uint32(i)
+}
+
+func ascii(s string) []int32 {
+	ints := make([]int32, 0)
+	for _, v := range strings.Split(s, "") {
+		var i64 int64
+		if len(v) == 1 {
+			i64 = int64(v[0])
+		} else {
+			quoted := strconv.QuoteToASCII(v)
+			unquoted := quoted[1 : len(quoted)-1]
+			unquoted = strings.Replace(unquoted, "\\u", "", 1)
+			i64, _ = strconv.ParseInt(unquoted, 16, 32)
+		}
+		ints = append(ints, int32(i64))
+	}
+	return ints
 }
 
 func fill(slice []uint32, index int, value uint32) []uint32 {
