@@ -7,13 +7,6 @@ import (
 )
 
 func GetTK(s, tkk string) string {
-	b, _ := strconv.Atoi(strings.Split(tkk, ".")[0])
-	b1, _ := strconv.Atoi(strings.Split(tkk, ".")[1])
-
-	jd := "."
-	sb := "+-a^+6"
-	Zb := "+-3^+b+-f"
-
 	a := ascii(s)
 	e := make([]uint32, 0)
 	for f, g := 0, 0; g < len(a); g++ {
@@ -51,19 +44,26 @@ func GetTK(s, tkk string) string {
 			}
 		}
 	}
-	aa := uint32(b)
+
+	ka := suint32(strings.Split(tkk, ".")[0])
+	kb := suint32(strings.Split(tkk, ".")[1])
+
+	Sb := "+-a^+6"
+	Zb := "+-3^+b+-f"
+
+	aa := ka
 	for f := 0; f < len(e); f++ {
 		aa += e[f]
-		aa = RL(aa, sb)
+		aa = r(aa, Sb)
 	}
-	aa = RL(aa, Zb)
-	aa ^= uint32(b1)
+	aa = r(aa, Zb)
+	aa ^= kb
 	aa %= 1E6
 
-	return fmt.Sprintf("%v%s%v", aa, jd, aa^uint32(b))
+	return fmt.Sprintf("%v.%v", aa, aa^ka)
 }
 
-func RL(a uint32, b string) uint32 {
+func r(a uint32, b string) uint32 {
 	t := "a"
 	Yb := "+"
 	for c := 0; c < len(b)-2; c += 3 {
@@ -72,7 +72,7 @@ func RL(a uint32, b string) uint32 {
 		if d >= t {
 			dd = uint32(d[0]) - 87
 		} else {
-			dd = Number(d)
+			dd = suint32(d)
 		}
 		if string(b[c+1]) == Yb {
 			dd = a >> dd
@@ -88,7 +88,7 @@ func RL(a uint32, b string) uint32 {
 	return a
 }
 
-func Number(s string) uint32 {
+func suint32(s string) uint32 {
 	i, _ := strconv.Atoi(s)
 	return uint32(i)
 }
